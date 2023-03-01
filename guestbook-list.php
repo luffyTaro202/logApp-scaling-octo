@@ -1,5 +1,18 @@
 <?php
+require('config/config.php');
+require('config/db.php');
 
+// Query the database for all persons' logs
+$query = 'SELECT * FROM person ORDER BY logdt DESC';
+
+$result = mysqli_query($conn, $query);
+
+// Fetch all data as an associative array
+$persons = mysqli_fetch_all($result, MYSQLI_ASSOC);
+
+mysqli_free_result($result);
+
+mysqli_close($conn);
 ?>
 
 <?php include('inc/header.php'); ?>

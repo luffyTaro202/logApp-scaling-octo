@@ -1,5 +1,35 @@
 <?php
-  
+
+  require('config/config.php');
+  require('config/db.php');
+
+  // Check for submit
+  if(isset($_POST['submit'])){
+    // Get form data
+    $username = mysqli_real_escape_string($conn,$_POST['username']);
+    $password = mysqli_real_escape_string($conn,$_POST['password']);
+
+    // Query to check if user exists
+    $query = "SELECT * FROM account WHERE username = '$username'";
+
+    $result = mysqli_query($conn, $query);
+
+    if($result){
+      $user = mysqli_fetch_assoc($result);
+
+      if($password === $user['password']){
+        // User authenticated, redirect to logs page
+        header('Location: '.ROOT_URL.'guestbook-list.php');
+      } else {
+        // Incorrect password, display error message
+        echo  '<div class="alert alert-danger">Incorrect username or password.</div>';
+      }
+    } else {
+      // User not found, display error message
+      echo '<div class="alert alert-danger">Incorrect username or password.</div>';
+    }
+  }
+
 
 
 
